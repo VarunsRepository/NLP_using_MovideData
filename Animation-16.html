@@ -182,6 +182,7 @@ onload = function () {
 
             let div = document.createElement("Div");
             div.id = "CHILDIV" + x;
+            div.className = "ChildDotElement"
             div.style.width = DOT_RADIUS + "px";
             div.style.height = DOT_RADIUS + "px";
             div.style.position = 'absolute'
@@ -193,11 +194,16 @@ onload = function () {
             //div.innerHTML = "Hello, element";
             div.setAttribute("xPositon", a);
             div.setAttribute("yPositon", b);
+
+
+            div.addEventListener('click', function (event) {  div.innerHTML = "Hello, element"; });
             document.getElementById("div_element_parent").appendChild(div)
             
 
             dots.push(new Dot(x, y, z, "Test", theta, phi));
         }
+    
+     
     }
 
     /* ====================== */
@@ -251,7 +257,7 @@ onload = function () {
 
         // Increase the globe rotation
         //rotation = a * 0.0004;
-        rotation =  rotation+0.004;
+        rotation =  rotation+0.0004;
 
         const sineRotation = Math.sin(rotation); // Sine of the rotation
         const cosineRotation = Math.cos(rotation); // Cosine of the rotation
