@@ -4,7 +4,9 @@
 </head>
 <body style="margin:0px">
   <!--<canvas id="canvas" style="display:block"></canvas> -->  
-    <script type="text/javascript">
+
+  <input type="ra"nge" min="1" max="100" value="50"   id=myRange">
+<script type="text/javascript">
  
 var GIF_image = new Image();
 
@@ -12,7 +14,9 @@ var GIF_image = new Image();
 //GIF_image.src = "//C:/Users/Varun/Desktop/asaturn.png";
  
 onload = function () {
+    document.documentElement.style.overflow = 'hidden';
 
+    
     var canvas_MAIN = document.createElement('canvas');
     var canvas_BG = document.createElement("canvas");
     var Orbit_BG = document.createElement("canvas");
@@ -35,6 +39,7 @@ onload = function () {
 
     generate_Layer1();
     console.clear();
+ 
 
     var div = document.createElement("Div");
         div.id = "div_element_parent"
@@ -45,15 +50,52 @@ onload = function () {
         div.style.position = "absolute"
         div.style.left = "0px"
         div.style.top = "0px"
-        div.style.backgroundColor =  "rgba(1, 1, 1, 0.3)";
+        div.style.backgroundColor =  "rgba(0, 0, 0, 1)";
         div.style.color      = "white";
       //  div.innerHTML        = "Hello, This is the new Parent container element";
         document.body.appendChild(div); 
+        
+        
+ 
+       function createSlider(ID, minVal, maxVal, stepSize){
+        var size_slider = document.createElement("input");
+       size_slider.id =  "globeSize"
+       size_slider.type = "range"
+       size_slider.min = "0.08"
+       size_slider.max = "20.8"
+       size_slider.value = "0.8"
+       size_slider.step = "0.001"
+       size_slider.style.width = 300 + "px";
+       size_slider.style.height = 30 + "px";
+       size_slider.style.position = 'absolute'
+       size_slider.style.borderRadius = "100%";
+       size_slider.style.top  =  20 + "px"
+       size_slider.style.left =  20 + "px" 
+       size_slider.style.zIndex = '1';
+       div.appendChild(size_slider)
+       }
 
+       var size_slider = document.createElement("input");
+       size_slider.id =  "globeSize"
+       size_slider.type = "range"
+       size_slider.min = "1"//"0.08"
+       size_slider.max =  "300"//"20.8"
+       size_slider.value = "120"//"0.8"
+       size_slider.step = "1"//"0.001"
+       size_slider.style.width = 300 + "px";
+       size_slider.style.height = 30 + "px";
+       size_slider.style.position = 'absolute'
+       size_slider.style.borderRadius = "100%";
+       size_slider.style.top  =  20 + "px"
+       size_slider.style.left =  20 + "px" 
+       size_slider.style.zIndex = '1';
+       div.appendChild(size_slider)
+ 
+  
     // Get the canvas element from the DOM
     const canvas = document.getElementById('canvas_Top');
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight;
     // Store the 2D context
     const ctx = canvas.getContext('2d');
 
@@ -63,9 +105,6 @@ onload = function () {
         canvas.height = canvas.clientHeight * 2;
         ctx.scale(2, 2);
     }
-    /* ====================== */
-    /* ====== VARIABLES ===== */
-    /* ====================== */
     let width = canvas.clientWidth; // Width of the canvas
     let height = canvas.clientHeight; // Height of the canvas
     let rotation = 0; // Rotation of the globe
@@ -79,26 +118,32 @@ onload = function () {
         let aspect_ratio = (window.innerWidth)/(window.innerHeight);     
 
         if(aspect_ratio > 1){
-            GLOBE_RADIUS = window.innerHeight * 0.8;
+            GLOBE_RADIUS = window.innerHeight  ;
         }
         else{
-            GLOBE_RADIUS = window.innerWidth * 0.8;
+            GLOBE_RADIUS = window.innerWidth  ;
         }
 
         return GLOBE_RADIUS;
     }
- 
-    const DOTS_AMOUNT         = 105; // Amount of dots on the screen
-    const DOT_RADIUS          =  10; // Radius of the dots
+  
+    const DOTS_AMOUNT         = 100; // Amount of dots on the screen10
+    const DOT_RADIUS          =  20; // Radius of the dots
     let GLOBE_RADIUS          = get_Radius() // Radius of the globe
     let GLOBE_CENTER_Z        = -get_Radius(); // Z value of the globe center
     let PROJECTION_CENTER_X_A = (width / 2) ; // X center o the canvas HTML
     let PROJECTION_CENTER_Y_A = (height / 2); // Y center of the canvas HTML
-    let FIELD_OF_VIEW         = GLOBE_RADIUS * 0.8;
+    let FIELD_OF_VIEW_projection_factor = 0.8
+    let FIELD_OF_VIEW         = GLOBE_RADIUS * FIELD_OF_VIEW_projection_factor;
+ 
+    size_slider.addEventListener('input', function (event) { 
+         GLOBE_RADIUS        =  (size_slider.value )
+        FIELD_OF_VIEW = GLOBE_RADIUS * (size_slider.value )
+    });
 
-    //    let PROJECTION_CENTER_X_B = width - (width / 2) * 1.5;
-          
-        class Dot {
+
+
+    class Dot {
             constructor(x, y, z, data, theta, phi) {
 
                 this.GLOBE_RADIUS = GLOBE_RADIUS;
@@ -161,8 +206,7 @@ onload = function () {
         }
 
     }
-
-
+ 
     function createDots() {
         // Empty the array of dots
         //dots.length = 0;
@@ -180,26 +224,127 @@ onload = function () {
             let  a = Math.round(1000*Math.random()) 
             let  b = Math.round(1000*Math.random()) 
 
-            let div = document.createElement("Div");
-            div.id = "CHILDIV" + x;
-            div.className = "ChildDotElement"
-            div.style.width = DOT_RADIUS + "px";
-            div.style.height = DOT_RADIUS + "px";
-            div.style.position = 'absolute'
-            div.style.borderRadius = "100%";
-            div.style.top  =  a + "px"
-            div.style.left =  b + "px" 
-            div.style.backgroundColor =  "rgba(50, 50, 50, 0.93)";
-            div.style.color = "#222222";
-            //div.innerHTML = "Hello, element";
-            div.setAttribute("xPositon", a);
-            div.setAttribute("yPositon", b);
-
-
-            div.addEventListener('click', function (event) {  div.innerHTML = "Hello, element"; });
-            document.getElementById("div_element_parent").appendChild(div)
+            //let div = document.createElement("Div");
+            //div.id = "CHILDIV" + x;
+            //div.className = "ChildDotElement"
+            //div.style.width = DOT_RADIUS + "px";
+            //div.style.height = DOT_RADIUS + "px";
+            //div.style.position = 'absolute'
+            //div.style.borderRadius = "100%";
+            //div.style.top  =  a + "px"
+            //div.style.left =  b + "px" 
+            //div.style.backgroundColor =  "rgba(50, 50, 50, 0.93)";
+            //div.style.color = "#222222";
+            ////div.innerHTML = "Hello, element";
+            //div.setAttribute("xPositon", a);
+            //div.setAttribute("yPositon", b);
+//
+            //div.addEventListener('click', function (event) {  
+            //    div.innerHTML = "<br>Hello, element"; });
+            //document.getElementById("div_element_parent").appendChild(div)
             
+        let div = document.createElement("Div");
+        div.id = "CHILDIV" + x;
+        div.className = "ChildDotElement"
+        div.style.width = DOT_RADIUS + "px";
+        div.style.height = DOT_RADIUS + "px";
+        div.style.position = 'absolute'
+        div.style.borderRadius = "100%";
+        div.style.top  =  a + "px"
+        div.style.left =  b + "px" 
+        div.style.backgroundColor =  "rgba(150, 150, 150, 0.9)";
+        div.style.color = "#222222";
+        //div.innerHTML = "A message here";
+        div.setAttribute("xPositon", a);
+        div.setAttribute("yPositon", b);
 
+  
+        let div2 = document.createElement("Div");
+        div2.id = "CHILDIV" + x + "_" + 2;
+        div2.className = "ChildDotAdditionalElement"
+        div2.style.width = (DOT_RADIUS*0.5) + "px";
+        div2.style.height = (DOT_RADIUS*0.5) + "px";
+        div2.style.position = 'absolute'
+        div2.style.borderRadius = "100%";
+        div2.style.top  =  "-50%"
+        div2.style.left =  "-50%" 
+        div2.style.backgroundColor =  "rgba(150, 50, 150, 0.93)";
+        div2.style.color = "#222222";
+      //div2.innerHTML = "Hello, element";
+        div2.setAttribute("xPositon", a);
+        div2.setAttribute("yPositon", b);
+        div2.hidden = true
+        div.appendChild(div2)
+
+        let div3 = document.createElement("Div");
+        div3.id = "CHILDIV" + x + "_" + 3;
+        div3.className = "ChildDotAdditionalElement"
+        div3.style.width = (DOT_RADIUS*0.5) + "px";
+        div3.style.height = (DOT_RADIUS*0.5) + "px";
+        div3.style.position = 'absolute'
+        div3.style.borderRadius = "100%";
+        div3.style.top  =  "-50%"
+        div3.style.left =  "100%" 
+        div3.style.backgroundColor =  "rgba(150, 50, 150, 0.93)";
+      //  div3.style.color = "#222222";
+      //div3.innerHTML = "Hello, element";
+        div3.setAttribute("xPositon", a);
+        div3.setAttribute("yPositon", b);
+        div3.hidden = true
+        div.appendChild(div3)
+
+        let div4 = document.createElement("Div");
+        div4.id = "CHILDIV" + x + "_" + 4;
+        div4.className = "ChildDotAdditionalElement"
+        div4.style.width = (DOT_RADIUS*0.5) + "px";
+        div4.style.height = (DOT_RADIUS*0.5) + "px";
+        div4.style.position = 'absolute'
+        div4.style.borderRadius = "100%";
+        div4.style.top  =  "100%"
+        div4.style.left =  "100%" 
+        div4.style.backgroundColor =  "rgba(150, 50, 150, 0.93)";
+        div4.style.color = "#222222";
+      //div4.innerHTML = "Hello, element";
+        div4.setAttribute("xPositon", a);
+        div4.setAttribute("yPositon", b);
+        div4.hidden = true
+        div.appendChild(div4)
+
+    let div5 = document.createElement("Div");
+        div5.id = "CHILDIV" + x + "_" + 5;
+        div5.className = "ChildDotAdditionalElement"
+        div5.style.width = (DOT_RADIUS*0.5) + "px";
+        div5.style.height = (DOT_RADIUS*0.5) + "px";
+        div5.style.position = 'absolute'
+        div5.style.borderRadius = "100%";
+        div5.style.top  =  "100%"
+        div5.style.left =  "-50%" 
+        div5.style.backgroundColor =  "rgba(150, 50, 150, 0.93)";
+        div5.style.color = "#222222";
+      //div5.innerHTML = "Hello, element";
+        div5.setAttribute("xPositon", a);
+        div5.setAttribute("yPositon", b);
+        div5.hidden = true
+        div.appendChild(div5)
+
+
+        div.addEventListener('mouseover', function (event) { 
+            div2.hidden = false
+            div3.hidden = false
+            div4.hidden = false
+            div5.hidden = false
+ 
+    });
+        div.addEventListener('mouseout', function (event) {  
+            div2.hidden = true
+            div3.hidden = true
+            div4.hidden = true
+            div5.hidden = true
+ 
+    });
+
+    document.getElementById("div_element_parent").appendChild(div)
+        
             dots.push(new Dot(x, y, z, "Test", theta, phi));
         }
     
@@ -257,14 +402,15 @@ onload = function () {
 
         // Increase the globe rotation
         //rotation = a * 0.0004;
-        rotation =  rotation+0.0004;
+        rotation =  rotation+0.004;
 
         const sineRotation = Math.sin(rotation); // Sine of the rotation
         const cosineRotation = Math.cos(rotation); // Cosine of the rotation
 
         var id = null;
 
-        let P = document.getElementById("div_element_parent").childNodes
+        //let P = document.getElementById("div_element_parent").childNodes
+        let P = document.getElementsByClassName("ChildDotElement") 
 
         // Loop tPROJECTION_CENTER_Y_Ahrough the dots array and draw every dot
         for (var i = 0; i < dots.length; i++) { 
@@ -289,7 +435,8 @@ onload = function () {
             canvas.width = canvas.clientWidth * 2;
             canvas.height = canvas.clientHeight * 2;
             ctx.scale(2, 2);
-        } else {
+        } 
+        else {
             canvas.width = width;
             canvas.height = height;
         }
@@ -311,9 +458,7 @@ onload = function () {
         // Store a new timeout to avoid calling afterResize for every resize event
         resizeTimeout = window.setTimeout(afterResize, 500);
     }
-
-
-
+ 
     window.addEventListener('resize', onResize);
 
     // Populate the dots array with random dots
@@ -323,8 +468,7 @@ onload = function () {
     window.requestAnimationFrame(render);
 
 }
-
-
+ 
        // Restart_canvas()
     </script>
 
