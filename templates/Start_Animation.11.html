@@ -1,0 +1,609 @@
+﻿<!DOCTYPE HTML>
+<html>
+    <head>
+    </head>
+    <body style="margin:0px">
+            <!--<canvas id="canvas" style="display:block"></canvas> -->  
+
+            <!-- {% for x in content %}
+            <p>{{x}}</p>
+                {% endfor %} -->
+
+
+        <table id="Movie_DataSet" style="border:#e81f1f"> 
+            
+              {% for value in content%} 
+              <tr> 
+                <td class="value0">{{ value[0] }}</td> 
+                <td class="value1">{{ value[1] }}</td> 
+                <td class="value2">{{ value[2] }}</td> 
+                <td class="value3">{{ value[3] }}</td> 
+              </tr> 
+              {% endfor %} 
+
+          </table> 
+
+        <script type="text/javascript">
+            
+            var GIF_image = new Image(); 
+            GIF_image.id = "JhonnyBravo"
+            GIF_image.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXkDtbprHQfPhCyVSXq7XrdNLD6ny2kxQEg&usqp=CAU'; 
+            GIF_image.width = window.innerWidth
+            GIF_image.height = window.innerHeight
+            GIF_image.onload = main()
+
+    
+            console.log("Next Iteration")
+
+            function main() {
+
+                function init_console(){
+    //            console.log("Centre(", window.innerWidth/2 ,",",window.innerHeight/2,")" )
+    //            console.log("Canvas(", window.innerWidth ,",",window.innerHeight,")" )
+                }
+                
+                function initialize_data() {
+                    let M_Data = document.getElementById("Movie_DataSet").getElementsByClassName("value0")
+                    var M_Data_Values = []
+
+                    for(var x=0; x<M_Data.length ; x++){
+                        M_Data_Values.push(M_Data[x].innerHTML)
+                    }
+
+                    window.alert(M_Data_Values)
+                    return(M_Data_Values)
+                
+                }
+
+  
+            function generate_Background_Image() {
+            var canvas_BG = document.createElement("canvas");
+            var canvas_BG = document.createElement("canvas");
+            var canvas_Bg_ctx = canvas_BG.getContext("2d");
+            var wi = canvas_BG.width = window.innerWidth * 4
+            var he = canvas_BG.height = window.innerHeight * 3
+            var canvas_Bg_ctx = canvas_BG.getContext("2d");
+
+            var star_count = 100000
+            var Star_X = [];
+            var Star_Y = [];
+            var Star_Size = [];
+            var Star_Color = [];
+
+            //This loop creates the  star Details
+            for (var i = 0; i < star_count; i = i + 1) {
+                Star_X.push(parseInt(2 * wi * Math.random()))
+                Star_Y.push(parseInt(2 * he * Math.random()))
+                Star_Size.push(window.innerHeight * 0.002 * Math.random())
+                var color = parseInt(16777215 * Math.random()).toString(16);
+                while (color.length < 6) {
+                    color = "0".concat(color)
+                }
+                Star_Color.push("#".concat(color));
+            }
+
+            //This loop adds the stars created from the above loop onto the canvas _BG layer
+            for (var i = 0; i < star_count; i = i + 1) {
+                canvas_Bg_ctx.beginPath();
+                canvas_Bg_ctx.moveTo(Star_X[i], Star_Y[i])
+                canvas_Bg_ctx.fillStyle = Star_Color[i];
+                canvas_Bg_ctx.lineWidth = 3;
+                canvas_Bg_ctx.arc(Star_X[i], Star_Y[i], Star_Size[i], 0, 2 * Math.PI, false);
+                canvas_Bg_ctx.fill()
+            }
+
+            canvas_Bg_ctx.beginPath();
+            canvas_Bg_ctx.strokeStyle = "yellow";
+            canvas_Bg_ctx.lineWidth = 3;
+
+            canvas_Bg_ctx.moveTo(0, 0);
+            canvas_Bg_ctx.lineTo(wi, 0);
+            canvas_Bg_ctx.lineTo(wi, he);
+            canvas_Bg_ctx.lineTo(0, he);
+            canvas_Bg_ctx.lineTo(0, 0);
+            canvas_Bg_ctx.stroke();
+
+            var generated_Image = canvas_BG.toDataURL( );
+            //console.log(generated_Image)
+            let image = new Image();
+
+            image.src = generated_Image
+            
+            return (image)
+            }
+ 
+                function generate_Layer1() {
+                    var canvas_MAIN = document.createElement('canvas');
+                    canvas_MAIN.id = 'canvas';
+                    canvas_MAIN.id = 'canvas_Top';
+                    canvas_MAIN.style.display = "block"
+                    canvas_MAIN.style.zIndex = '1';
+                    canvas_MAIN.style.position = "absolute"
+                    canvas_MAIN.style.left = "0px"
+                    canvas_MAIN.style.top = "0px"
+                    canvas_MAIN.width = window.innerWidth;
+                    canvas_MAIN.height = window.innerHeight
+                    document.body.appendChild(canvas_MAIN);
+                }
+                 
+                function generate_Parent_Div(){
+                var div = document.createElement("Div");
+                    div.id = "div_element_parent"
+                    div.style.width      = window.innerWidth  + 'px';
+                    div.style.height      = window.innerHeight + 'px';
+                    div.style.display = "block"
+                    div.style.zIndex = '1';
+                    div.style.position = "absolute"
+                    div.style.left = "0px"
+                    div.style.top = "0px"
+                    div.style.backgroundColor =  "rgba(0, 0, 0, 1)";
+                    div.style.backgroundImage = "url('" + imagefile.src + "')";
+                    //div.style.backgroundImage = "url('download.png')";
+                    div.style.backgroundRepeat = "no-repeat"
+                    div.style.backgroundAttachment = "fixed";
+                    div.style.backgroundPosition =   "center";
+ 
+
+                    //      div.style.backgroundSize = window.innerHeight + "px " + window.innerHeight  + "px" 
+                    //      div.style.backgroundImage.width =  window.innerWidth + 'px';
+                    //      div.style.backgroundImage.height = window.innerHeight + 'px';
+                    //      div.innerHTML = "Hello, This is the new Parent container element";
+                    document.body.appendChild(div); 
+                }
+                 
+                function createSlider(ID, minVal, maxVal, currentVal, currentPosition){
+                    var size_slider = document.createElement("input");
+                    size_slider.id =  ID
+                    size_slider.type = "range"
+                    size_slider.min = minVal
+                    size_slider.max = maxVal
+                    size_slider.value = currentVal
+                    size_slider.step = "0.0001"
+                    size_slider.style.width = (window.innerWidth/6)   + "px";
+                    size_slider.style.height = (window.innerHeight/12) + "px";
+                    size_slider.style.position = 'absolute'
+                    size_slider.style.borderRadius = "100%";
+                    size_slider.style.top  =  (currentPosition*30) + "px"
+                    size_slider.style.left =  (currentPosition*20) + "px" 
+                    size_slider.style.zIndex = '1';
+                    document.getElementById("div_element_parent").appendChild(size_slider)
+
+                    return(size_slider)
+                }
+             
+                class Dot {
+                        constructor(index, x, y, z, data, theta, phi) {
+
+                            this.index = index
+                            this.GLOBE_RADIUS = GLOBE_RADIUS;
+                            this.radius = GLOBE_RADIUS;
+                            this.x = x;
+                            this.y = y;
+                            this.z = z;
+                            this.data = data;
+                            this.static = false;
+                            this.leaveArea = "false";
+                            this.theta = theta;
+                            this.phi = phi;
+                            this.alpha = 1;
+                            this.MaxIntensity = MaxIntensity;
+                            this.ElementSize = ElementSize;
+                            
+                            this.xProject = 0;
+                            this.yProject = 0;
+                            this.sizeProjection = 20;
+                            this.PROJECTION_CENTER_X_A = PROJECTION_CENTER_X_A;
+                            this.PROJECTION_CENTER_Y_A = PROJECTION_CENTER_Y_A;
+                            this.setscaleLimits();
+                        }
+                    
+                    move()  {
+                        //this.phi = this.phi + RevolutionSpeed;
+                        this.theta = this.theta +  parseFloat(RevolutionSpeed); 
+
+                        this.x = this.radius * Math.sin(this.phi) * Math.cos(this.theta);
+                        this.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + window.innerWidth/2;
+                        this.y = this.radius * Math.cos(this.phi);
+                        
+                        if(this.leaveArea == "true"){
+                            this.preparingToLeave()
+                        }
+                    }
+
+                        // Do some math to project the 3D position into the 2D canvas
+                    projectNew(sin, cos)   {                        
+                        var Dx = (Math.cos(Rot_Y)*Math.cos(Rot_Z)*(this.x - cx))+(Math.cos(Rot_Y)*Math.sin(Rot_Z)*(this.y - cy))+((-Math.sin(Rot_Y))*(this.z - cz))
+                        var Dy = ((Math.sin(Rot_X)*Math.sin(Rot_Y)*Math.cos(Rot_Z))+(Math.cos(Rot_X)*(-Math.sin(Rot_Z)))*(this.x - cx))+((Math.sin(Rot_X)*Math.sin(Rot_Y)*Math.sin(Rot_Z))+(Math.cos(Rot_X)*Math.cos(Rot_Z))*(this.y - cy))+((Math.sin(Rot_X)*Math.cos(Rot_Y)*1)*(this.z - cz))
+                        var Dz = ((Math.cos(Rot_X)*Math.sin(Rot_Y)*Math.cos(Rot_Z))+((-Math.sin(Rot_X))*(-Math.sin(Rot_Z)))*(this.x - cx))+((Math.cos(Rot_X)*Math.sin(Rot_Y)*Math.sin(Rot_Z))+((-Math.sin(Rot_X))*Math.cos(Rot_Z))*(this.y - cy))+((Math.cos(Rot_X)*Math.cos(Rot_Y)*1)*(this.z - cz))
+                        
+                        this.xProject = (Ez*Dx/Dz) + Ex
+                        this.yProject = (Ez*Dy/Dz) + Ey
+                        this.sizeProjection = Dy/Dz
+
+                        this.projectSimple()
+                    }
+                    // Draw the dot on the canvas
+                    draw(sin, cos) {
+                        this.project(sin, cos);
+                        // ctx.fillRect(this.xProject - DOT_RADIUS, this.yProject - DOT_RADIUS, DOT_RADIUS * 2 * this.sizeProjection, DOT_RADIUS * 2 * this.sizeProjection);
+                        
+                        let ctx = document.getElementById('canvas_Top').getContext('2d'); 
+                        //ctx.beginPath();
+                        //ctx.arc(this.xProject, this.yProject, DOT_RADIUS * this.sizeProjection, 0, Math.PI * 2);
+                        //ctx.fill()
+                        //let w   = 12 * this.data.length //+ 20
+                        //let h   = 15 * 1.34;
+
+                        //ctx.font = '15pt Courier';
+ 
+                    }
+
+                    preparingToLeave() {
+                        if(this.radius>0){
+                        this.radius = this.radius - 1 ;
+                        }
+                        //this.x =  (this.GLOBE_RADIUS  + 1) * Math.sin(this.phi) * Math.cos(this.theta);
+                        //this.y =  (this.GLOBE_RADIUS  + 1) * Math.sin(this.phi) * Math.sin(this.theta);
+                        //this.z = ((this.GLOBE_RADIUS  + 1) * Math.cos(this.phi)) + GLOBE_CENTER_Z;
+                    }
+ 
+                    setscaleLimits(){
+                        this.inMin = (window.innerWidth/2) / ((window.innerWidth/2) + (this.radius + window.innerWidth/2));
+                        this.inMax = (window.innerWidth/2) / ((window.innerWidth/2) + (window.innerWidth/2));
+                    }
+
+                    scale(currValue, inMin, inMax, outMin, outMax) {
+                        return (currValue - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+                    }
+ 
+                    projectSimple(){
+                        this.scaleProjected = (window.innerWidth/2) / ((window.innerWidth/2) + this.z);
+                        this.xProject = (this.x * this.scaleProjected) + (window.innerWidth/2);
+                        this.yProject = (this.y * this.scaleProjected) + (window.innerHeight/2);
+                        this.sizeProjection = this.scaleProjected;
+                        this.alpha = this.scale(this.scaleProjected, this.inMin, this.inMax, 0, 5);
+                    }
+                }
+    
+                class WorkingDot{
+                    constructor(DotData ){
+                        this.DotData = DotData
+                        this.ElementDiv = ""
+                        this.WorkingDotId = ""
+                        this.createElement()
+                    }
+                    createElement(){
+                        var image_Url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXkDtbprHQfPhCyVSXq7XrdNLD6ny2kxQEg&usqp=CAU'
+                
+                        //This is the whole element space(central Dot + the 4 Surrounding Dots)
+                        var div = document.createElement("Div");
+                            div.id = "CHILDIV" + this.DotData.index;
+                            div.className = "ChildDotElement"
+                            div.style.width = DOT_RADIUS  + 'px';
+                            div.style.height = DOT_RADIUS + 'px';
+                            div.style.borderRadius = "5%";
+                            div.style.display = "block"
+                            div.style.zIndex = '1';
+                            div.style.position = "absolute"
+                            div.style.left = "-50%"
+                            div.style.top = "-50%"
+                            div.style.backgroundColor =  "rgba(255, 255, 255, 0.99)";
+                            div.style.backgroundImage = "url('" + image_Url + "')";
+                            div.style.backgroundRepeat = "no-repeat"
+                            //div.style.backgroundAttachment = "fixed";
+                            div.style.backgroundPosition =   "center";
+                            //div.style.backgroundSize = DOT_RADIUS + "px " + DOT_RADIUS + "px" 
+                     
+                            div.style.color = "#EEEEEE";
+                            div.innerHTML = this.DotData.data;
+                            div.style.fontFamily = "monospace"
+                            div.style.fontSize = Math.round(this.DotData.sizeProjection * DOT_RADIUS * 0.07) + "px"
+        
+                            div.setAttribute("xPositon", this.xProject);
+                            div.setAttribute("yPositon", this.yProject);
+                            div.setAttribute("PPTL", "false");
+                            div.setAttribute("sizeProjection", this.DotData.sizeProjection);
+                            div.setAttribute("indexforDot", this.DotData.DOT_Index)
+                            
+                        var div2 = document.createElement("Div");
+                            div2.id = "CHILDIV" + this.DotData.index + "_" + 2;
+                            div2.className = "ChildDotAdditionalElement"
+                            div2.style.width  = (this.DotData.sizeProjection * DOT_RADIUS * 0.01) + "px";
+                            div2.style.height = (this.DotData.sizeProjection * DOT_RADIUS * 0.01) + "px";
+                            div2.style.position = 'absolute'
+                            div2.style.borderRadius = "50%";
+                            div2.style.top  =  "-50%"
+                            div2.style.left =  "-50%" 
+                            div2.style.backgroundColor =  "rgba(255, 255, 255, 0.93)";
+                            div2.style.color = "#222222";
+                            
+                            div2.style.fontFamily = "monospace"
+                            div2.style.fontSize = Math.round(this.DotData.sizeProjection * DOT_RADIUS * 0.01) + "px"
+                            div2.style.color = "#FF0000"
+                            div2.innerHTML = this.DotData.index + this.DotData.data;
+
+                            div2.setAttribute("xPositon", 0);
+                            div2.setAttribute("yPositon", 0);
+                            div2.hidden = false
+                             
+                            //div.appendChild(div2)
+ 
+                            div.addEventListener('mouseover', function (event) { 
+                            //      document.getElementById("CHILDIV" + x).setAttribute("PPTL","F");
+                            //      this.setAttribute("PPTL","true")
+                            //      window.alert(document.getElementById("CHILDIV" + x).getAttribute("PPTL"))       
+                            });
+                            div.addEventListener('mouseout', function (event) {         
+                            });
+                            div.addEventListener('click', function (event) {  
+                            //window.alert("clicked" + div.innerHTML)
+                                this.setAttribute("PPTL","true")       
+                            });
+                            div.addEventListener("touchstart", function (event) {         
+                                this.setAttribute("PPTL","true")    
+                            });
+
+                            this.ElementDiv = div
+                            
+                    }
+                    move(){
+                        this.DotData.move()
+                    }
+                    project(){
+                        this.DotData.projectSimple()
+                    }
+                    update(){
+                        
+                        //document.getElementById(this.ElementDiv.id).remove()
+ 
+                        //implement the logic to set the size_element,  size_Text, intensity using the three sliders
+                        // Add an additonal sloder to control alpha(if needed ina desperation )  
+
+                        this.move();
+                        this.project();
+                        let this_DOT_RADIUS = Math.round(this.DotData.alpha*this.DotData.ElementSize*0.025 * DOT_RADIUS)
+                        //let brightness = this.DotData.sizeProjection * 100
+                        let brightness = this.DotData.alpha*this.DotData.ElementSize*0.05 * 100
+
+                        this.ElementDiv.style.left   =  this.DotData.xProject + "px" 
+                        this.ElementDiv.style.top    =  this.DotData.yProject + "px" 
+                        
+                        this.ElementDiv.innerHTML = this.DotData.data + '<p style="color:#FF0000; font-Size:12px">This is the text which has been inserted by JS</p>'
+                        
+                        
+                        this.ElementDiv.style.width  = this_DOT_RADIUS + "px"
+                        this.ElementDiv.style.height = this_DOT_RADIUS + "px"
+                        this.ElementDiv.style.filter = "brightness(" + brightness + "%)";
+                        this.ElementDiv.setAttribute("sizeProjection",this.DotData.sizeProjection)
+                        //this.ElementDiv.style.fontSize = Math.round(this.DotData.sizeProjection * DOT_RADIUS ) + "px"
+                        this.ElementDiv.style.fontSize = Math.round(this.DotData.MaxIntensity*5  ) + "px"
+  
+                        document.getElementById("div_element_parent").appendChild(this.ElementDiv)
+                        this.DotData.leaveArea = document.getElementById(this.ElementDiv.id).getAttribute("PPTL")     
+                        
+                        //P = this.ElementDiv
+                    }
+                }
+
+                function createDots(){
+
+                    var Dots_data = initialize_data()
+                    create_Dot_Objects(Dots_data)
+                    for(var x = 0; x<dots.length; x++){    
+                    let new_dot = new WorkingDot(DotData=dots[x])
+                    new_dots.push(new_dot)
+                    document.getElementById("div_element_parent").appendChild(new_dot.ElementDiv)
+                    }
+
+                }
+
+                function render(){
+  
+                    new_dots.sort(function(p1, p2) { return parseFloat(p1.DotData.sizeProjection) - parseFloat(p2.DotData.sizeProjection)  })
+ 
+                    for (var i = 0 ; i < new_dots.length; i++) { 
+                    new_dots[i].update() 
+                    }
+
+                     
+
+                    window.requestAnimationFrame(render);
+                }
+
+                function create_Dot_Objects(Dataset){
+                    
+                    for (let i = 0; i < Dataset.length; i++) {
+                        //let theta  = Math.random() * 2 * Math.PI; // Random value between [0, 2PI]
+                        let theta  = (i/Dataset.length) * 2 * Math.PI; // Random value between [0, 2PI]
+                        
+                        let phi = Math.acos((Math.random() * 0.75) - 0.75); // Random value between [-0.5, 0.5]
+                       
+                        //let phi = Math.acos((Math.random() * 1.8) - 1); // Random value between [-1, 1]
+                        let new_dot = new Dot(index = i, x=0, y=0, z=0, data = Dataset[i], theta = theta, phi = phi) 
+                        new_dot.move();
+                        dots.push(new_dot);
+                    }    
+                }
+
+                function Create_Div_Elements(){
+
+                    var image_Url = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXkDtbprHQfPhCyVSXq7XrdNLD6ny2kxQEg&usqp=CAU'
+
+                    for(var i=0; i<dots.length; i++){
+
+                        //This is the whole element space(central Dot + the 4 Surrounding Dots)
+                        var div = document.createElement("Div");
+                            div.id = "CHILDIV" + i;
+                            div.className = "ChildDotElement"
+                            div.style.width = DOT_RADIUS  + 'px';
+                            div.style.height = DOT_RADIUS + 'px';
+                            div.style.borderRadius = "5%";
+                            div.style.display = "block"
+                            div.style.zIndex = '1';
+                            div.style.position = "absolute"
+                            div.style.left = "-50%"
+                            div.style.top = "-50%"
+                            div.style.backgroundColor =  "rgba(255, 255, 255, 0.99)";
+                            div.style.backgroundImage = "url('" + image_Url + "')";
+                            div.style.backgroundRepeat = "no-repeat"
+                            div.style.backgroundPosition =   "center";
+  
+                            div.style.color = "#EEEEEE";
+                            div.innerHTML = dots[i].data;
+                            div.style.fontFamily = "monospace"
+                            div.style.fontSize = "12px"
+        
+                            div.setAttribute("xPositon", a);
+                            div.setAttribute("yPositon", b);
+                            div.setAttribute("PPTL", "false");
+                            div.setAttribute("sizeProjection", 10);
+                            div.setAttribute("indexforDot", i)
+ 
+                            document.getElementById("div_element_parent").appendChild(div)
+                            }
+                     
+                }
+ 
+                function LoadTheNonImportantPart(){
+    /* ====================== */
+                /* ======== RENDER ====== */
+                /* ====================== */
+                // Get the canvas element from the DOM
+                const canvas = document.getElementById('canvas_Top');
+                canvas.width = window.innerWidth
+                canvas.height = window.innerHeight;
+                var total_Width = window.innerWidth;
+                var total_Height = window.innerHeight;
+                const ctx = canvas.getContext('2d');
+
+                // Clear the scene
+                ctx.clearRect(0, 0, total_Width, total_Height);
+        
+                var resolution_x = total_Width/10;
+                var resolution_y = total_Height/10;
+
+                ctx.strokeStyle = "#FFFFFF"
+                for (var i = 0; i < 20; i++) {
+                    ctx.beginPath()
+                    ctx.moveTo(i * resolution_x, 0)
+                    ctx.lineTo((i + 1) * resolution_y, total_Height)
+                    ctx.stroke()
+                }
+                for (var i = 0; i < 20; i++) {
+                    ctx.beginPath()
+                    ctx.moveTo(0, i * resolution_y)
+                    ctx.lineTo(total_Width, (i + 1) * resolution_y)
+                    ctx.stroke()
+                }
+        
+                ctx.beginPath()
+                ctx.arc(PROJECTION_CENTER_X_A, PROJECTION_CENTER_Y_A, FIELD_OF_VIEW, 0, 2 * Math.PI)
+                ctx.stroke();
+                }
+ 
+                // Function called after the user resized its screen
+                function afterResize() {
+                    width = canvas.offsetWidth;
+                    height = canvas.offsetHeight;
+                    if (window.devicePixelRatio > 1) {
+                        canvas.width = canvas.clientWidth * 2;
+                        canvas.height = canvas.clientHeight * 2;
+                        ctx.scale(2, 2);
+                    } 
+                    else {
+                        canvas.width = width;
+                        canvas.height = height;
+                    }
+                    GLOBE_RADIUS = width * 0.7;
+                    GLOBE_CENTER_Z = -GLOBE_RADIUS;
+                    PROJECTION_CENTER_X_A = width / 2;
+                    PROJECTION_CENTER_Y_A = height / 2;
+                    FIELD_OF_VIEW = width * 0.8;
+
+                    createDots(); // Reset all dots
+                }
+                
+                let Rot_X = 0;
+                let Rot_Y = 0;
+                let Rot_Z = 0;
+                      
+                let Ex = window.innerHeight/2
+                let Ey = window.innerWidth/2
+                let Ez = window.innerWidth/2
+                
+                let cx = window.innerHeight/2
+                let cy = window.innerWidth/2
+                let cz = window.innerWidth
+
+                var imagefile = generate_Background_Image()
+                document.documentElement.style.overflow = 'hidden';
+                generate_Layer1();
+                generate_Parent_Div();
+                let rotation = 0; // Rotation of the globe
+                let dots = []; // Every dots in an array
+                let new_dots =[];
+                let Div_Array = []; 
+                let DOTS_AMOUNT         = 0; // Amount of dots on the screen10
+                let DOT_RADIUS            =  50; // Radius of the dots
+                let GLOBE_RADIUS          = ((window.innerWidth)/(window.innerHeight) > 1) ?  window.innerHeight : window.innerWidth/2 // Radius of the globe
+                let GLOBE_CENTER_Z        = -(GLOBE_RADIUS); // Z value of the globe center
+                let PROJECTION_CENTER_X_A = (window.innerWidth / 2) ; // X center o the canvas HTML
+                let PROJECTION_CENTER_Y_A = (window.innerHeight / 2); // Y center of the canvas HTML
+                let FIELD_OF_VIEW_projection_factor = 0.8
+                let FIELD_OF_VIEW         = GLOBE_RADIUS * FIELD_OF_VIEW_projection_factor;
+                let RevolutionSpeed       =  parseFloat(0.009);
+                let MaxIntensity          = 8;
+                let ElementSize = 1;
+
+                    // Variable used to store a timeout when user resized its screen
+                    let resizeTimeout;
+                    // Function called right after user resized its screen
+                    init_console();
+                    // Populate the dots array with random dots
+                    createDots();
+    
+                    
+                var GlobeRadiusControl = createSlider(ID="GlobeRadiusControl", minVal=(1), maxVal=window.innerWidth , currentVal=GLOBE_RADIUS, currentPosition=1)
+                var RevolutionSpeedControl = createSlider(ID="RevolutionSpeedControl", minVal=0, maxVal=0.09 , currentVal=RevolutionSpeed, currentPosition=2)
+                var MaxIntensityControl = createSlider(ID="MaxIntensityControl", minVal=1, maxVal=10 , currentVal=MaxIntensity, currentPosition=3)
+                var ElementSizeControl = createSlider(ID="ElementSizeControl", minVal=1, maxVal=10 , currentVal=ElementSize, currentPosition=4)
+
+                GlobeRadiusControl.addEventListener('input', function (event) { 
+                    GLOBE_RADIUS       =  (GlobeRadiusControl.value )
+
+                    let P = document.getElementsByClassName("ChildDotElement")
+                    for(var x=0; x<dots.length; x++){
+                        dots[x].radius = GLOBE_RADIUS
+                        P[x].setAttribute("PPTL", "false")
+                    } 
+                });
+                RevolutionSpeedControl.addEventListener('input', function (event) { 
+                    RevolutionSpeed       =  (RevolutionSpeedControl.value )
+                });
+                MaxIntensityControl.addEventListener('input', function (event) { 
+                    MaxIntensity       =  (MaxIntensityControl.value )
+                    
+                    let P = document.getElementsByClassName("ChildDotElement")
+                    for(var x=0; x<dots.length; x++){
+                        dots[x].MaxIntensity = MaxIntensity
+                        P[x].setAttribute("PPTL", "false")
+                    } 
+                });                                
+                ElementSizeControl.addEventListener('input', function (event) { 
+                    ElementSize       =  (ElementSizeControl.value )
+                    
+                    let P = document.getElementsByClassName("ChildDotElement")
+                    for(var x=0; x<dots.length; x++){
+                        dots[x].ElementSize = ElementSize
+                        P[x].setAttribute("PPTL", "false")
+                    } 
+                });
+               
+  
+
+                    // Render the scene
+                    window.requestAnimationFrame(render);
+            }
+        </script>
+    </body> 
+</html>
